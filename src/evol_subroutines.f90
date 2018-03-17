@@ -30,14 +30,14 @@ contains
     open(unit=2,file='EEOSH',status='old')
     open(unit=3,file='EEOSHE',status='old')
     open(unit=4,file='EEOSC',status='old')
-    open(unit=11,status='scratch',form='unformatted')
+    open(unit=111,status='scratch',form='unformatted')
     open(unit=13,file='IEOSC',status='old',form='unformatted')
     open(unit=14,file='IEOSO',status='old',form='unformatted')
     open(unit=15,file='AUXIN5',status='old') 
     open(unit=25,file='SQOPAC',status='old') 
 
     if (evoloutput) then
-       open(unit=1,file=t1)
+       open(unit=11,file=t1)
        open(unit=26,file=t6)
        open(unit=9,file=t9)
        open(unit=17,file=out)
@@ -122,7 +122,7 @@ contains
     alph(1) = alph1
     alph(2) = alph2
     if ( evoloutput ) then
-       write(1,1006) amhyhe,amheca, alph(1),alph(2),alph(3),alph(4)
+       write(11,1006) amhyhe,amheca, alph(1),alph(2),alph(3),alph(4)
        write(9,1006) amhyhe,amheca, alph(1),alph(2),alph(3),alph(4)
        write(17,1006) amhyhe,amheca, alph(1),alph(2),alph(3),alph(4)
        write(20,1006) amhyhe,amheca, alph(1),alph(2),alph(3),alph(4)
@@ -510,7 +510,7 @@ contains
     if ( evoloutput ) then
        write(9,6) smass, dg, stpms, corat(1), corat(ncore)
        write(26,6) smass, dg, stpms, corat(1), corat(ncore)
-       write(1,6) smass, dg, stpms, corat(1), corat(ncore)
+       write(11,6) smass, dg, stpms, corat(1), corat(ncore)
     end if
 
 ! Copy y into read2x
@@ -1653,7 +1653,10 @@ contains
        end do
     end if
 
-    if ( ip5 .gt. 0 .and. ip6 .gt. 0 ) stop
+    if ( ip5 .gt. 0 .and. ip6 .gt. 0 ) then
+       print *, "mysterious stop in subroutine end"
+       stop
+    end if
 !  Stash the interior shells
 !  Call eprep to calculate converged envelope, store it in aa,
 !  and write it to tape50!
@@ -1682,8 +1685,8 @@ contains
 !!$       print *, 'reached debugging stop statement in subroutine end'
 !!$       stop
 
-       write(11) stash2
-       rewind 11
+       write(111) stash2
+       rewind 111
 !*** write out model to tape9 ***
        call write3
        if (ihotspot .eq. 1) goto 806
@@ -1694,8 +1697,8 @@ contains
        if ((newtime - t0) .gt. xmaxtime) goto 806
        if (ihotspot .eq. 1) goto 806
        ifin = 0
-       read(11) stash2
-       rewind 11
+       read(111) stash2
+       rewind 111
 
 ! Retrieve variables from stash
        sa(:)  = stash2(   1: 600)
@@ -1970,8 +1973,8 @@ contains
        kstart=0
     endif
     if ( kk(1)+kk(2)+kk(3) .gt. 0 ) then
-       write(11) stash2
-       rewind 11
+       write(111) stash2
+       rewind 111
        do i=1,3
           if (kk(i) .gt. 0) then
              call env
@@ -1980,8 +1983,8 @@ contains
              if (ihotspot.eq.1) goto 56
           endif
        end do
-       read(11) stash2
-       rewind 11
+       read(111) stash2
+       rewind 111
     elseif ( npass .gt. 0 ) then
        goto 17
     endif
@@ -2082,7 +2085,8 @@ contains
     real*8, pointer, dimension(:) :: x1, y1, y2, y3, y4, y5, y6, y7, y8, z1
     real*8, dimension(600,8) :: x,y,z
     real*8, pointer :: fn
-    
+
+    print *, 'write3'
     fn => fn2
     x1 => sa
     y1 => s
@@ -2206,14 +2210,16 @@ contains
        endif
 
 161 format(i4,1p,e12.4,0p,f7.3,2f6.3,f7.3,f9.6,2f11.4,2f9.3)
+171 format(i4,1p,e12.4,0p,f7.3,2f6.3,f7.3,f9.6,2f11.4,f9.3)
 
+       print *, ixswch
        if ( ixswch .eq. 4 ) then
-          write(1,161) modnr,ssg,p2,t2,ucent,rm,tel,bl,bnt,10.**amxc,10.**amxo 
+          write(11,161) modnr,ssg,p2,t2,ucent,rm,tel,bl,bnt,10.**amxc,10.**amxo 
           write(9,161) modnr,ssg,p2,t2,ucent,rm,tel,bl,bnt,10.**amxc,10.**amxo 
        else
-          write(1,161) modnr,ssg,p2,t2,ucent,rm,tel,bl,bnt,10.**amxc
-          write(9,161) modnr,ssg,p2,t2,ucent,rm,tel,bl,bnt,10.**amxc
-          write(20,161) modnr,ssg,p2,t2,ucent,rm,tel,bl,bnt,10.**amxc
+          write(11,171) modnr,ssg,p2,t2,ucent,rm,tel,bl,bnt,10.**amxc
+          write(9,171) modnr,ssg,p2,t2,ucent,rm,tel,bl,bnt,10.**amxc
+          write(20,171) modnr,ssg,p2,t2,ucent,rm,tel,bl,bnt,10.**amxc
        end if
        write(9,160) dg,gx,ssg,stpms,f,tmax1,tmax2,modnr,g3
 261    format(f4.1,2i5,1p,3e9.2,0p,f8.0,f9.3,f8.3)

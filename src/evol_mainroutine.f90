@@ -165,6 +165,7 @@ mls = 1 !Bohm & Cassinelli
 !             ' purposes--it',/' should be equivalent to a normal DB model', &
 !             ' with just C/He layering'/)
      else
+        print *, "can't find our way out of this pickle"
 	stop
      end if
 

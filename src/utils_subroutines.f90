@@ -965,6 +965,7 @@ contains
 25  if (iflag .eq. 3) goto 40
     if ((iflag .eq. 4) .and. (abserr .gt. 0.)) goto 45
 30  continue
+    print *, "mysterious stop in subroutine rkfs"
     stop
 40  nfe=0
     if (mflag .eq. 2) goto 50
@@ -1139,7 +1140,8 @@ contains
 110 continue
     goto 216
 700 continue
-    
+
+    print *, "mysterious stop in subroutine spintl"
     stop 
 216 return
   end subroutine splintl

@@ -439,6 +439,7 @@ contains
 !  if there are too many shells for the arrays, terminate execution.
 
     if(m.gt.650)then
+       print *, "Too many shells for the arrays. Exiting."
        stop
     endif
 

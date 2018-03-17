@@ -685,7 +685,8 @@ contains
     if ( j .le. jmin ) then 
        j=jmin
        iii=iii+1
-       if ( converg .and. iii .ge. itest ) then 
+       if ( converg .and. iii .ge. itest ) then
+          print *, "And we're dying in subroutine wdselect"
           stop
        endif
        ifail = ifail + 1
@@ -693,6 +694,7 @@ contains
        j=jmax
        iii=iii+1
        if ( iii .ge. itest ) then
+          print *, "And we're dying in subroutine wdselect"
           stop
        endif
        ifail = ifail + 1
