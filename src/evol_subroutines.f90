@@ -2086,7 +2086,6 @@ contains
     real*8, dimension(600,8) :: x,y,z
     real*8, pointer :: fn
 
-    print *, 'write3'
     fn => fn2
     x1 => sa
     y1 => s
@@ -2212,7 +2211,6 @@ contains
 161 format(i4,1p,e12.4,0p,f7.3,2f6.3,f7.3,f9.6,2f11.4,2f9.3)
 171 format(i4,1p,e12.4,0p,f7.3,2f6.3,f7.3,f9.6,2f11.4,f9.3)
 
-       print *, ixswch
        if ( ixswch .eq. 4 ) then
           write(11,161) modnr,ssg,p2,t2,ucent,rm,tel,bl,bnt,10.**amxc,10.**amxo 
           write(9,161) modnr,ssg,p2,t2,ucent,rm,tel,bl,bnt,10.**amxc,10.**amxo 
