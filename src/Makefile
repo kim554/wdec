@@ -72,7 +72,7 @@ OBJ9 = getpar_grid.o
 #getpar_grid.o: 	getpar_grid.f90 
 #	$(FC) $(FFLAGS) -c $<
 
-makeda: 	$(OBJ3) $(OBJ4) $(OBJ5) $(OBJ6) $(OBJ7) $(OBJ8) $(OBJ9)
+makeda: 	$(OBJ3) $(OBJ4) $(OBJ5dx) $(OBJ6) $(OBJ7) $(OBJ8) $(OBJ9)
 	$(FC)	$(FFLAGS) -o ../$@ $^ 
 
 makedx_mesa: 	$(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5dx) $(OBJ6) $(OBJ7) $(OBJ8) $(OBJ9)
