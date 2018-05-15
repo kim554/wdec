@@ -23,9 +23,12 @@ OBJ3 = block_data.o commonblocks.o
 OBJ4 = utils_subroutines.o ocon_functions.o phase_functions.o nuax_subroutines.o
 OBJ5dx = chemprofiles_subroutines.o
 OBJ5he = chemprofiles_subroutines.heliumcore.o
+OBJ6old = eprep_subroutines_old.o istat_subroutines_old.o
 OBJ6 = eprep_subroutines.o istat_subroutines.o
+OBJ7old = evol_subroutines_old.o pulse_subroutines.o
 OBJ7 = evol_subroutines.o pulse_subroutines.o
 OBJ8 = evol_mainroutine.o pulse_mainroutine.o calcp_mainroutine.o
+OBJ8old = evol_mainroutine.o pulse_mainroutine_old.o calcp_mainroutine.o
 OBJ9 = getpar_grid.o
 
 #OBJ1
@@ -72,7 +75,7 @@ OBJ9 = getpar_grid.o
 #getpar_grid.o: 	getpar_grid.f90 
 #	$(FC) $(FFLAGS) -c $<
 
-makeda: 	$(OBJ3) $(OBJ4) $(OBJ5dx) $(OBJ6) $(OBJ7) $(OBJ8) $(OBJ9)
+makeda_orig: 	$(OBJ3) $(OBJ4) $(OBJ5dx) $(OBJ6old) $(OBJ7old) $(OBJ8old) $(OBJ9)
 	$(FC)	$(FFLAGS) -o ../$@ $^ 
 
 makedx_mesa: 	$(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5dx) $(OBJ6) $(OBJ7) $(OBJ8) $(OBJ9)
