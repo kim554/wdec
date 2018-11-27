@@ -11,14 +11,17 @@ subroutine comp_core(i,amr)
 ! by someone clever. There are no limitations as far as EOS tables and opacities
 ! are concerned. ABK, June 2016.
 
+!Subroutines
+
 !Common blocks
-  use xcompp
   use comp, only : x
   use flags, only : idif, chemprofmode
   use coeff, only : cfac1, cfac2
   use misc_const, only : amsun
+  use shells, only: s
   use startmod, only : M_env
   use terp, only : stpms
+  use xcompp
 
   implicit none
   
@@ -26,7 +29,7 @@ subroutine comp_core(i,amr)
   real*8 :: stpms10
   real*8 :: menv_mr,boundary
   integer :: i
-
+  
 ! We have three regions to consider:
 ! I  . The tail end of the oxygen profile, mixed with Carbon
 ! II . The region where we have O/C/He all mixed
@@ -52,6 +55,11 @@ subroutine comp_core(i,amr)
 ! (appears chopped off on its inner edge, and/or there is a weird spike in the
 ! carbon abundance profile), try increasing buffer_inner in inputprof.
 
+! 1 = Hydrogen
+! 2 = Helium
+! 3 = Carbon
+! 4 = Oxygen
+  
 ! Make up Oxygen profile
   call profsm1(amr,ams_o,corat_o,ndimo,ao,xo2)
   xcomp(i,4) = xo2
@@ -75,7 +83,7 @@ subroutine comp_core(i,amr)
   x(:) = xcomp(i,:)
 !  print *, mmr, xcomp(i,:)
 !  print *, -log10(1-mmr), xcomp(i,:)
- 
+
   return
 
 end subroutine comp_core
@@ -151,7 +159,7 @@ subroutine comp_env
 ! Use profche for base of He layer
      call profche(ame,xhe)
 ! And we may still have some oxygen in that region
-     call profsm4(mmr,ams_o,corat_o,ndimo,ao,xo)
+     call profsm1(mmr,ams_o,corat_o,ndimo,ao,xo)
      x(1) = 0.d0 ! H set to zero
      x(2) = xhe
      x(3) = 1.d0 - xo - xhe ! Carbon is 1 - oxygen - helium
@@ -250,6 +258,7 @@ end subroutine comp_env
 
 !*****************************************************************************
 ! Linear interpolation
+! Not smooth enough  
 
   subroutine profsm4(amr,xvals,yvals,ndim,a,x2)
 
