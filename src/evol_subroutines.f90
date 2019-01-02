@@ -304,6 +304,8 @@ contains
     read(5,*)
     read(5,*) buffer_inner
     read(5,*) buffer_outer
+
+    rewind(5)
     
     if (evoloutput) then
        do i=1,ndimo
