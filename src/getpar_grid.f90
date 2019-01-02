@@ -117,15 +117,15 @@ program getpar
                             !to edit the source file calcp_mainroutine.f90 and
                             !change the value of the variable stpmsid to 9995.
 
-10 format(F9.1,5F7.1,2F5.1,F6.2)
+10 format(8F9.1)
 
 firstmod = .true.
 !read(101,*)  !First line contains header for the user
   do
      open(unit=8000,file='testoutput',position='append')
-     read(101,*,end=1) datain(1:9)
-     write(*,10) datain(1:9)
-     write(102,10) datain(1:9)
+     read(101,*,end=1) datain(1:8)
+     write(*,10) datain(1:8)
+     write(102,10) datain(1:8)
      call check_time(starttime)
      datain(24) = real(starttime)
      call calculate_periods(datain)  
