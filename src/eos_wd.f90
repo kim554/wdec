@@ -127,7 +127,7 @@
          
         if (ierr /= 0) then
            write(*,*) 'bad result from eos_get'
-           stop 1
+          ! stop 1
         end if
 
       end subroutine wd_eos_DT
