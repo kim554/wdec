@@ -19,17 +19,22 @@ FC = gfortran
 
 OBJ1 = wd_eos_mod.o
 OBJ2 = wd_opalz_mod.o
-OBJ3 = block_data.o commonblocks.o
+OBJ3v15 = block_data.o commonblocks_v15.o
+OBJ3v16 = block_data.o commonblocks_v16.o
 OBJ4 = utils_subroutines.o ocon_functions.o phase_functions.o nuax_subroutines.o
-OBJ5dx = chemprofiles_subroutines.o
+OBJ5dxv15 = chemprofiles_subroutines_v15.o
+OBJ5dxv16 = chemprofiles_subroutines_v16.o
 OBJ5he = chemprofiles_subroutines.heliumcore.o
 OBJ6old = eprep_subroutines_old.o istat_subroutines_old.o
 OBJ6 = eprep_subroutines.o istat_subroutines.o
 OBJ7old = evol_subroutines_old.o pulse_subroutines.o
-OBJ7 = evol_subroutines.o pulse_subroutines.o
-OBJ8 = evol_mainroutine.o pulse_mainroutine.o calcp_mainroutine.o
+OBJ7v15 = evol_subroutines_v15.o pulse_subroutines.o
+OBJ7v16 = evol_subroutines_v16.o pulse_subroutines.o
+OBJ8v15 = evol_mainroutine.o pulse_mainroutine.o calcp_mainroutine_v15.o
+OBJ8v16 = evol_mainroutine.o pulse_mainroutine.o calcp_mainroutine_v16.o
 OBJ8old = evol_mainroutine.o pulse_mainroutine_old.o calcp_mainroutine.o
-OBJ9 = getpar_grid.o
+OBJ9v15 = getpar_grid_v15.o
+OBJ9v16 = getpar_grid_v16.o
 
 #OBJ1
 #commonblocks.o: commonblocks.f90 
@@ -78,7 +83,12 @@ OBJ9 = getpar_grid.o
 makeda_orig: 	$(OBJ3) $(OBJ4) $(OBJ5dx) $(OBJ6old) $(OBJ7old) $(OBJ8old) $(OBJ9)
 	$(FC)	$(FFLAGS) -o ../$@ $^ 
 
-makedx_mesa: 	$(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5dx) $(OBJ6) $(OBJ7) $(OBJ8) $(OBJ9)
+#For fixed oxygen profiles
+makedx_v15: 	$(OBJ1) $(OBJ2) $(OBJ3v15) $(OBJ4) $(OBJ5dxv15) $(OBJ6) $(OBJ7v15) $(OBJ8v15) $(OBJ9v15)
+	$(LOADER) $(FCopenmp) -o ../$@ $^ -L$(MESA_LIB_DIR) $(LOAD_MESA_MICRO) 
+
+#For asteroseismic fitting of oxygen profiles (and other structure of the model)
+makedx_v16: 	$(OBJ1) $(OBJ2) $(OBJ3v16) $(OBJ4) $(OBJ5dxv16) $(OBJ6) $(OBJ7v16) $(OBJ8v16) $(OBJ9v16)
 	$(LOADER) $(FCopenmp) -o ../$@ $^ -L$(MESA_LIB_DIR) $(LOAD_MESA_MICRO) 
 
 makeda_he: 	$(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5he) $(OBJ6) $(OBJ7) $(OBJ8) $(OBJ9)
