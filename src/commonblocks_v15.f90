@@ -37,7 +37,7 @@ end module ax
 
 module flagtmp
   
-  integer :: neuts
+  integer :: neuts,mlver
 
 end module flagtmp
 
@@ -501,7 +501,8 @@ module xcompp
 ! amr_hyhe is the input boundary between helium and hydrogen regions in
 ! fractional stellar mass (e.g. 0.99 if log(M_He) = -2) 
   real*8 :: amr_hyhe, ao, ahe, buffer_inner, buffer_outer
-  integer :: ndimo, ndimhe
+  real*8 :: oxygenmass, carbonmass, heliummass
+  integer :: ndimo, ndimhe, ndimo_old
 
 end module xcompp
 
