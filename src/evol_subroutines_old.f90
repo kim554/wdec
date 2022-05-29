@@ -47,7 +47,7 @@ contains
     end if
     
     open(unit=5,file='inputprof')
-    open(unit=10,file='initprof.dat')
+    !open(unit=10,file='initprof.dat')
 
     rewind(1)
     rewind(9)
@@ -205,49 +205,47 @@ contains
   end subroutine read1
 
 !************************************************************************
-
   subroutine read2
 
 !  read model and some more control parameters
 
 !Subroutines
     use istat_subroutines, only : istatco, istat1
-    use utils_subroutines, only : xlocate, armove, simpint
+    use utils_subroutines, only : xlocate, armove
     use chemprofiles_subroutines, only : comp_core, profsm_orig
+
 !Common blocks
-    use rw2
-    use shells 
-    use thermo 
-    use surf
-    use temp
-    use contrl
-    use xxnew
-    use times
-    use comptmp
-    use xcompp
+    use cc, only : smm   ! Stellar mass in solar masses
     use comp, only : x
-    use flagtmp
-    use flags, only : verbose, evoloutput, firstmod
-    use terp
-    use vca
-    use dvca
-    use xbnd
+    use comptmp
+    use contrl
     use corats
-    use fin
-    use dfin
-    use tfitt
-    use gne
     use crash
+    use dfin
+    use dvca
+    use fin
+    use flags, only : verbose, evoloutput, firstmod
+    use flagtmp
+    use gne
+    use mixl
     use outfile
     use read2input
-    use mixl
-    use cc, only : smm   ! Stellar mass in solar masses
+    use rw2
+    use shells
+    use temp
+    use terp
+    use tfitt
+    use thermo 
+    use times
+    use surf
+    use vca
+    use xbnd
+    use xcompp
+    use xxnew
 
     implicit double precision(a-h,o-z)
 
-    integer, parameter :: nshells = 600
-    real*8, dimension(nshells,7) :: read2x, y
-    real*8, dimension(nshells) :: xin, yin
+    real*8, dimension(600,7) :: read2x, y
     real*8, pointer :: fn
 
 ! y has 7 columns. The column headers are:
@@ -281,16 +279,8 @@ contains
 
     call tape
 
-! read in parameters associated with the manufacture of chemical profiles,
-! both for the core and for the envelope.
+! set main points of the core oxygen profile
 
-    rewind(5)
-    read(5,*)
-    read(5,*)
-    read(5,*) ndimo
-
-    print *, firstmod
-    
     if (firstmod) then
        allocate(ams_o(ndimo), corat_o(ndimo))
     else
@@ -298,16 +288,18 @@ contains
        corat_o(:) = 0.0d0
     end if
 
+    ams_o(:)   = core_points(:,1)
+    corat_o(:) = core_points(:,2)
+    
+! read some more parameters that shape the chemical profiles
     read(5,*)
-    do i=1,ndimo
-       read(5,*) ams_o(i), corat_o(i)
-    end do
+    read(5,*)
+    read(5,*) ao  !smoothing parameter for oxygen profile
+    read(5,*)
+    read(5,*) buffer_inner  !have to do with stitching of Helium profile
+    read(5,*) buffer_outer  !see inputprof and documentation for more details
 
-    read(5,*)
-    read(5,*) ao
-    read(5,*)
-    read(5,*) buffer_inner
-    read(5,*) buffer_outer
+    rewind(5)
     
     if (evoloutput) then
        do i=1,ndimo
@@ -507,29 +499,7 @@ contains
        enddo
        
     endif
-    
-! 1 = Hydrogen
-! 2 = Helium
-! 3 = Carbon
-! 4 = Oxygen
-
-! Calculate mass fractions in the core, to write out to modelt1
-! Quick and dirty, but gets 99.6% of the core mass.
-    if (evoloutput) then
-       do i=1,nshells
-          xin(i) = 10.d0**s(i)
-       end do
-! Oxygen
-       yin = xcomp(:,4)
-       call simpint(xin,yin,1,nshells,nshells,oxygenmass)
-! Carbon
-       yin = xcomp(:,3)
-       call simpint(xin,yin,1,nshells,nshells,carbonmass)
-! Helium
-       yin = xcomp(:,2)
-       call simpint(xin,yin,1,nshells,nshells,heliummass)
-    end if
-                
+          
     smass=10.**(sm-33.298635)
 6   format('*** h/he/c-o ',f4.2,'msun wd: dg=',f6.3,' stpms='e9.3, &
          ' co1=',f3.1,' co2=',f3.1,' ***')
