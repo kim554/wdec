@@ -71,7 +71,7 @@ subroutine calculate_periods(inputdata)
      end if
   case(3)
      if (M_h .lt. 20.) then
-        call nonlinearfitDA
+        call nonlinearfitDA(Teff)
      else
         aml = 0.96
      end if
