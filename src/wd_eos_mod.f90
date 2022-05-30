@@ -152,7 +152,10 @@ contains
 
     if (ierr /= 0) then
        write(*,*) 'bad result from eos_get'
-!       stop 1
+       write(*,*) T, in1
+       write(*,*) Rho, Pgas
+       write(*,*) xa(:)
+       stop 1
     end if
 
     p = Pgas
