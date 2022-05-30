@@ -1593,6 +1593,30 @@ contains
  end subroutine dert
 
 !************************************************************************
+! Simple homemade integration routine that works with array inputs
+! Adds trapezoids
+
+  subroutine simpint(x,y,n1,n2,nshells,sum)
+
+    implicit none
+    
+    integer :: i, n1, n2, nshells
+    real*8, dimension(nshells) :: x, y
+    real*8 :: sum, piece
+
+    sum = 0.d0
+    i = n1
+    do while (i .lt. n2)
+       piece = y(i)*(x(i+1)-x(i)) + 1.d0/2.d0*(y(i+1)-y(i))*(x(i+1)-x(i))
+       sum = sum + piece
+       i=i+1
+    end do
+
+    return
+
+  end subroutine simpint
+
+!************************************************************************
 
 
 end module utils_subroutines
