@@ -91,7 +91,7 @@ makedx_v15: 	$(OBJ1) $(OBJ2) $(OBJ3v15) $(OBJ4) $(OBJ5dxv15) $(OBJ6) $(OBJ7v15) 
 makedx_v16: 	$(OBJ1) $(OBJ2) $(OBJ3v16) $(OBJ4) $(OBJ5dxv16) $(OBJ6) $(OBJ7v16) $(OBJ8v16) $(OBJ9v16)
 	$(LOADER) $(FCopenmp) -o ../$@ $^ -L$(MESA_LIB_DIR) $(LOAD_MESA_MICRO) 
 
-makeda_he: 	$(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5he) $(OBJ6) $(OBJ7) $(OBJ8) $(OBJ9)
+makeda_he: 	$(OBJ1) $(OBJ2) $(OBJ3v16) $(OBJ4) $(OBJ5he) $(OBJ6) $(OBJ7v16) $(OBJ8v16) $(OBJ9v16)
 	$(LOADER) $(FCopenmp) -o ../$@ $^ -L$(MESA_LIB_DIR) $(LOAD_MESA_MICRO)
 
 wd_eos_mod.o:	wd_eos_mod.f90
