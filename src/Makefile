@@ -5,7 +5,7 @@
 #gfortran flags
 FFLAGS = -ffree-line-length-132 -fdefault-real-8 -fdefault-double-8 -fno-automatic -w -finit-local-zero -fbacktrace -g
 
-MESA_DIR = /home/agnes/mesa-r8118
+MESA_DIR = /home/agnes/mesa
 include $(MESA_DIR)/utils/makefile_header
 
 FC = gfortran
@@ -20,21 +20,21 @@ FC = gfortran
 OBJ1 = wd_eos_mod.o
 OBJ2 = wd_opalz_mod.o
 OBJ3v15 = block_data.o commonblocks_v15.o
-OBJ3v16 = block_data.o commonblocks_v16.o
+OBJ3v20 = block_data.o commonblocks_v20.o
 OBJ4 = utils_subroutines.o ocon_functions.o phase_functions.o nuax_subroutines.o
 OBJ5dxv15 = chemprofiles_subroutines_v15.o
-OBJ5dxv16 = chemprofiles_subroutines_v16.o
+OBJ5dxv20 = chemprofiles_subroutines_v20.o
 OBJ5he = chemprofiles_subroutines.heliumcore.o
 OBJ6old = eprep_subroutines_old.o istat_subroutines_old.o
 OBJ6 = eprep_subroutines.o istat_subroutines.o
 OBJ7old = evol_subroutines_old.o pulse_subroutines_old.o
 OBJ7v15 = evol_subroutines_v15.o pulse_subroutines.o
-OBJ7v16 = evol_subroutines_v16.o pulse_subroutines.o
+OBJ7v20 = evol_subroutines_v20.o pulse_subroutines.o
 OBJ8v15 = evol_mainroutine.o pulse_mainroutine.o calcp_mainroutine_v15.o
-OBJ8v16 = evol_mainroutine.o pulse_mainroutine.o calcp_mainroutine_v16.o
-OBJ8old = evol_mainroutine.o pulse_mainroutine_old.o calcp_mainroutine_v16.o
+OBJ8v20 = evol_mainroutine.o pulse_mainroutine.o calcp_mainroutine_v20.o
+OBJ8old = evol_mainroutine.o pulse_mainroutine_old.o calcp_mainroutine_v20.o
 OBJ9v15 = getpar_grid_v15.o
-OBJ9v16 = getpar_grid_v16.o
+OBJ9v20 = getpar_grid_v20.o
 
 #OBJ1
 #commonblocks.o: commonblocks.f90 
@@ -80,7 +80,7 @@ OBJ9v16 = getpar_grid_v16.o
 #getpar_grid.o: 	getpar_grid.f90 
 #	$(FC) $(FFLAGS) -c $<
 
-makeda_orig: 	$(OBJ3v16) $(OBJ4) $(OBJ5dxv16) $(OBJ6old) $(OBJ7old) $(OBJ8old) $(OBJ9v16)
+makeda_orig: 	$(OBJ3v20) $(OBJ4) $(OBJ5dxv20) $(OBJ6old) $(OBJ7old) $(OBJ8old) $(OBJ9v20)
 	$(FC)	$(FFLAGS) -o ../$@ $^ 
 
 #For fixed oxygen profiles
@@ -88,10 +88,10 @@ makedx_v15: 	$(OBJ1) $(OBJ2) $(OBJ3v15) $(OBJ4) $(OBJ5dxv15) $(OBJ6) $(OBJ7v15) 
 	$(LOADER) $(FCopenmp) -o ../$@ $^ -L$(MESA_LIB_DIR) $(LOAD_MESA_MICRO) 
 
 #For asteroseismic fitting of oxygen profiles (and other structure of the model)
-makedx_v16: 	$(OBJ1) $(OBJ2) $(OBJ3v16) $(OBJ4) $(OBJ5dxv16) $(OBJ6) $(OBJ7v16) $(OBJ8v16) $(OBJ9v16)
+makedx_v20: 	$(OBJ1) $(OBJ2) $(OBJ3v20) $(OBJ4) $(OBJ5dxv20) $(OBJ6) $(OBJ7v20) $(OBJ8v20) $(OBJ9v20)
 	$(LOADER) $(FCopenmp) -o ../$@ $^ -L$(MESA_LIB_DIR) $(LOAD_MESA_MICRO) 
 
-makeda_he: 	$(OBJ1) $(OBJ2) $(OBJ3v16) $(OBJ4) $(OBJ5he) $(OBJ6) $(OBJ7v16) $(OBJ8v16) $(OBJ9v16)
+makeda_he: 	$(OBJ1) $(OBJ2) $(OBJ3v20) $(OBJ4) $(OBJ5he) $(OBJ6) $(OBJ7v20) $(OBJ8v20) $(OBJ9v20)
 	$(LOADER) $(FCopenmp) -o ../$@ $^ -L$(MESA_LIB_DIR) $(LOAD_MESA_MICRO)
 
 wd_eos_mod.o:	wd_eos_mod.f90
