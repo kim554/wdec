@@ -25,14 +25,11 @@ OBJ4 = utils_subroutines.o ocon_functions.o phase_functions.o nuax_subroutines.o
 OBJ5dxv15 = chemprofiles_subroutines_v15.o
 OBJ5dxv20 = chemprofiles_subroutines_v20.o
 OBJ5he = chemprofiles_subroutines.heliumcore.o
-OBJ6old = eprep_subroutines_old.o istat_subroutines_old.o
 OBJ6 = eprep_subroutines.o istat_subroutines.o
-OBJ7old = evol_subroutines_old.o pulse_subroutines_old.o
 OBJ7v15 = evol_subroutines_v15.o pulse_subroutines.o
 OBJ7v20 = evol_subroutines_v20.o pulse_subroutines.o
 OBJ8v15 = evol_mainroutine.o pulse_mainroutine.o calcp_mainroutine_v15.o
 OBJ8v20 = evol_mainroutine.o pulse_mainroutine.o calcp_mainroutine_v20.o
-OBJ8old = evol_mainroutine.o pulse_mainroutine_old.o calcp_mainroutine_v20.o
 OBJ9v15 = getpar_grid_v15.o
 OBJ9v20 = getpar_grid_v20.o
 
@@ -79,9 +76,6 @@ OBJ9v20 = getpar_grid_v20.o
 #OBJ6 
 #getpar_grid.o: 	getpar_grid.f90 
 #	$(FC) $(FFLAGS) -c $<
-
-makeda_orig: 	$(OBJ3v20) $(OBJ4) $(OBJ5dxv20) $(OBJ6old) $(OBJ7old) $(OBJ8old) $(OBJ9v20)
-	$(FC)	$(FFLAGS) -o ../$@ $^ 
 
 #For fixed oxygen profiles
 makedx_v15: 	$(OBJ1) $(OBJ2) $(OBJ3v15) $(OBJ4) $(OBJ5dxv15) $(OBJ6) $(OBJ7v15) $(OBJ8v15) $(OBJ9v15)
