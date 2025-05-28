@@ -380,7 +380,7 @@ module flags
 !1 If using points to define a profile
 !2 If reading in a ready made profile (not implemented in wdec yet)
   logical :: ios_new, kap_new, firstmod
-  logical :: verbose
+  logical :: verbose, screenoutput
   logical :: evoloutput, makeplots, kernels, pulsoutput, pulsemodel
   logical, parameter :: newledoux = .TRUE.
 
@@ -558,6 +558,7 @@ end module grad
 module terp
 
   real*8 :: stpms_orig,stpms,rat1
+  real*8 :: core_boundary = 1.0d0 - 10**(-3.2)
 
 end module terp
 

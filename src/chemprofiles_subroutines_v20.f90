@@ -20,7 +20,7 @@ subroutine comp_core(i,amr)
   use misc_const, only : amsun
   use shells, only: s
   use startmod, only : M_env
-  use terp, only : stpms
+  use terp, only : stpms, core_boundary
   use xcompp
 
   implicit none
@@ -39,8 +39,8 @@ subroutine comp_core(i,amr)
   stpms10 = 10.0d0**stpms
 !  amr = amr*stpms10
 
-  ame = 1.d0 - amr
-  menv_mr = 1.03d0 - 10**(-M_env)
+  ame = core_boundary - amr
+  menv_mr = core_boundary - 10**(-M_env)
 !  menv_mr = 10.0d0**stpms - 10.0d0**(-M_env)
 !  print *, M_env, menv_mr
 !  stop
@@ -64,11 +64,11 @@ subroutine comp_core(i,amr)
   call profsm1(amr,xo2)
   if (xo2 .lt. 0.0d0) xo2 = 0.0d0
   xcomp(i,4) = xo2
-
+ 
 ! Calculate core Helium abundance
 ! In region I, it's zero. In region II, calculate it
   if (amr .ge. boundary) then ! Region II
-     ame = 1.d0 - amr
+     ame = core_boundary - amr
      call profche(ame,xhe)
   else                        ! Region I
      xhe = 0.d0
@@ -106,7 +106,7 @@ subroutine comp_env
   use comptmp, only : hecdexp_tmp
   use flags, only : verbose
   use startmod, only: M_env
-  use terp, only: stpms, stpms_orig
+  use terp, only: stpms, stpms_orig, core_boundary 
   use xcompp
 
   implicit none
@@ -118,7 +118,7 @@ subroutine comp_env
   alpha3 = hecdexp_tmp
   alpha4 = -hecdexp_tmp
   qhyhe = abs(log10(amr_hyhe))
-  menv_mr = 1.d0 - 10.d0**(-M_env)
+  menv_mr = core_boundary - 10.d0**(-M_env)
 
   mmr = xmass/smm !Mr now in stellar mass (1.0 being the surface)
 !  mr = mr*0.873596
@@ -146,6 +146,7 @@ subroutine comp_env
   end if
   
 ! Region I is below M_env, staying away from M_env by buffer_inner
+ 
   if ( mmr .lt. (menv_mr-buffer_inner) ) then
      call profsm4(mmr,xo)
      if (xo .lt. 0.0d0) xo = 0.0d0
@@ -156,8 +157,12 @@ subroutine comp_env
   end if
 
 ! Region II starts buffer_inner below M_env and ends buffer_outer below qhyhe
-  if ( (mmr .ge. (menv_mr-buffer_inner)) .and. &
-       (abs(logqi) .lt. (qhyhe - buffer_outer)) ) then
+
+!  if ( (mmr .ge. (menv_mr-buffer_inner)) .and. &
+!       (abs(logqi) .lt. (qhyhe - buffer_outer)) ) then
+  
+if (abs(logqi) .lt. (qhyhe - buffer_outer)) then
+  
 ! Use profche for base of He layer
      call profche(ame,xhe)
 ! And we may still have some oxygen in that region
@@ -172,6 +177,7 @@ subroutine comp_env
 ! Region III starts buffer_outer below qhyhe
 ! Use diffusive equilbrium at the He/H interface. We assume there is no
 ! oxygen or carbon in that region
+
   if ( abs(logqi) .ge. (qhyhe - buffer_outer) ) then
      call DIFUSE(amhyhe,amheca,alpha3,alpha4,ame,xhe)
      x(1) = 1.d0 - xhe
@@ -199,7 +205,8 @@ end subroutine comp_env
 
 !Common blocks    
     use xcompp
-    
+    use terp, only: core_boundary
+
     implicit none
     
     integer :: i,npoints
@@ -214,7 +221,7 @@ end subroutine comp_env
     a = ao
     
     do i=1,ndimo
-       if (ams(i).ge.0.99999999) goto 10
+       if (ams(i).ge.core_boundary) goto 10
     enddo
 10  continue
     npoints = i
